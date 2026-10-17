@@ -23,6 +23,12 @@ Sunumdan 5 dakika önce yönetici sayfasını açman yeterli.
 
 Bu modda telefonlar yalnızca bilgisayarla aynı Wi-Fi ağındaysa katılabilir.
 
+## Tanıtım videosu
+
+- Videoyu film sayfasındaki **Export** ile MP4 olarak indir, adını `tanitim.mp4` yapıp oyunun dosyalarının yanına yükle.
+- **Oyunu başlat**'a basınca video projeksiyonda tam ekran oynar, bitince oyun başlar. **Videoyu geç** ile atlanabilir.
+- Dosya yoksa oyun doğrudan başlar.
+
 ## Takımlar
 
 - Kaç kişi katılırsa katılsın oyuncular otomatik olarak iki takıma (Kırmızı ve Mavi) bölünür.
@@ -31,7 +37,7 @@ Bu modda telefonlar yalnızca bilgisayarla aynı Wi-Fi ağındaysa katılabilir.
 
 ## Süre ayarı
 
-- Takım ekranındaki **Kısa mod** seçeneği S5, B5 ve V3'ü çıkarır (yaklaşık 7 dakika).
+- Takım ekranındaki **Kısa mod** seçeneği ikinci vakayı (V3) çıkarır.
 - **İçeriği onayla** panelinden yedek havuzdaki sahne, soru ve vakaları ekleyebilirsin.
 
 ## Testler

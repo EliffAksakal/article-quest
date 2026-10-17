@@ -77,6 +77,7 @@ function ciz(v) {
   if (v.faz === "lobi") return lobi(ana, v);
   if (v.faz === "takimlar") return takimEkran(ana, v);
   const a = v.adim;
+  if (a.tip === "kural") ana.innerHTML = `<div class="bekleme"><div><h1>Nasıl oynanır?</h1><ol class="kural-liste"><li>Sorular büyük ekranda, cevabını buradan seç.</li><li>Doğru ve hızlı cevap daha çok puan.</li><li>Vakalarda önce sen, sonra takımınla karar ver.</li></ol><p class="normal-not">Büyük ekrana bak.</p></div></div>`;
   if (a.tip === "giris") ana.innerHTML = `<div class="bekleme"><div><h1>${esc(a.baslik)}</h1><p>${esc(a.aciklama)}</p><p class="normal-not">Büyük ekrana bak.</p></div></div>`;
   else if (a.tip === "sahne") sahne(ana, a);
   else if (a.tip === "soru") soru(ana, v);

@@ -1,4 +1,4 @@
-const SPEKTRUM = ["#D93A26", "#F2B705", "#1F8A4C", "#2448C9"];
+const SPEKTRUM = ["#FF3B30", "#FF9500", "#34C759", "#007AFF"];
 const HARFLER = ["A", "B", "C", "D", "E", "F"];
 
 function piramitSvg(boyut, renk, sinif) {
@@ -67,7 +67,7 @@ function konfeti() {
   const ctx = c.getContext("2d");
   c.width = innerWidth;
   c.height = innerHeight;
-  const renk = ["#D93A26", "#F2B705", "#1F8A4C", "#2448C9", "#1B1B1B"];
+  const renk = ["#007AFF", "#FF9500", "#34C759", "#AF52DE", "#FF3B30", "#5AC8FA"];
   const p = Array.from({ length: 160 }, () => ({
     x: Math.random() * c.width, y: -20 - Math.random() * c.height * .5,
     vx: (Math.random() - .5) * 3, vy: 2 + Math.random() * 4, r: Math.random() * Math.PI,

@@ -6,8 +6,8 @@ from content import ASAMALAR, ITEMS, ITEMS_BY_ID, MAKALE, ROLLER, ROL_GOREV
 
 MAX_OYUNCU = 200
 TAKIM_STILLERI = [
-    {"ad": "Kırmızı Takım", "ikon": "", "renk": "#D93A26"},
-    {"ad": "Mavi Takım", "ikon": "", "renk": "#2448C9"},
+    {"ad": "Kırmızı Takım", "ikon": "", "renk": "#FF3B30"},
+    {"ad": "Mavi Takım", "ikon": "", "renk": "#007AFF"},
 ]
 CASE_SURELERI = {"bireysel": 30, "tartisma": 45, "takim": 30}
 FINAL_SURELERI = {"bireysel": 35, "tartisma": 50, "takim": 30}
@@ -98,7 +98,7 @@ def akis_olustur(kisa_mod=False, ekler=()):
             secili.append(item)
         elif item["id"] in ekler:
             secili.append(item)
-    akis = []
+    akis = [{"tip": "kural", "asama": "kural"}]
     for asama_id, baslik, aciklama in ASAMALAR:
         parca = [i for i in secili if i["asama"] == asama_id]
         if not parca:

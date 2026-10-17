@@ -3,7 +3,7 @@ const SAHNE_GORSEL = {
 <svg viewBox="0 0 930 360" role="img" aria-label="Tek bir ışın prizmaya girip bireysel, kurumsal ve sistemik olmak üzere üç ışına ayrılıyor">
   <line class="isin" x1="20" y1="190" x2="330" y2="190" stroke="#161B3D" stroke-width="6" stroke-linecap="round"/>
   <polygon class="belir" style="animation-delay:.6s" points="400,40 300,300 500,300" fill="#fff" stroke="#161B3D" stroke-width="4" stroke-linejoin="round"/>
-  <text class="belir" style="animation-delay:.9s" x="400" y="235" text-anchor="middle" font-family="var(--baslik)" font-weight="800" font-size="30" fill="#161B3D">PEAIL</text>
+  <text class="belir" style="animation-delay:.9s" x="400" y="235" text-anchor="middle" font-family="var(--baslik)" font-weight="800" font-size="30" fill="#161B3D">Müdür</text>
   <line class="isin" style="animation-delay:1.3s" x1="455" y1="170" x2="760" y2="70" stroke="#D93A26" stroke-width="10" stroke-linecap="round"/>
   <line class="isin" style="animation-delay:1.6s" x1="465" y1="190" x2="760" y2="185" stroke="#1F8A4C" stroke-width="10" stroke-linecap="round"/>
   <line class="isin" style="animation-delay:1.9s" x1="470" y1="210" x2="760" y2="300" stroke="#2448C9" stroke-width="10" stroke-linecap="round"/>

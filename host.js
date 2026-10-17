@@ -14,10 +14,34 @@ const TUR_ADI = {
   mc: "Çoktan seçmeli", tf: "Doğru / Yanlış", match: "Kavram eşleştirme", order: "Sıralama",
   scene: "Animasyonlu sahne + mini soru", case: "Vaka (takım kararı)",
 };
-const ASAMA_ADI = { kesif: "Kavramları Keşfet", bilgi: "Bilgi Yarışması", vaka: "Vaka Analizleri", final: "Final", sonuc: "Sonuçlar" };
+const ASAMA_ADI = { kural: "Nasıl oynanır?", kesif: "Kavramları Keşfet", bilgi: "Bilgi Yarışması", vaka: "Vaka Analizleri", final: "Final", sonuc: "Sonuçlar" };
 
 function eylem(ad, veri) {
+  if (ad === "baslat") return tanitimOynat(() => gonderEylem(ad, veri));
+  gonderEylem(ad, veri);
+}
+
+function gonderEylem(ad, veri) {
   socket.emit("host:eylem", { eylem: ad, veri }, r => { if (r && !r.ok) bildir(r.hata); });
+}
+
+function tanitimOynat(sonra) {
+  const kaynak = "/static/tanitim.mp4";
+  fetch(kaynak, { method: "HEAD" }).then(r => {
+    if (!r.ok) return sonra();
+    const kat = document.createElement("div");
+    kat.className = "tanitim";
+    kat.innerHTML = `<video src="${kaynak}" playsinline autoplay></video><div class="tanitim-alt"><span>Makaleyi 30 saniyede tanıyalım</span><button class="btn" type="button">Videoyu geç</button></div>`;
+    document.body.appendChild(kat);
+    const video = kat.querySelector("video");
+    let bitti = false;
+    const kapat = () => { if (bitti) return; bitti = true; video.pause(); kat.remove(); sonra(); };
+    video.addEventListener("ended", kapat);
+    video.addEventListener("error", kapat);
+    kat.querySelector("button").onclick = kapat;
+    const oynat = video.play();
+    if (oynat && oynat.catch) oynat.catch(() => { video.muted = true; video.play().catch(kapat); });
+  }).catch(() => sonra());
 }
 
 socket.on("connect", () => {
@@ -122,6 +146,7 @@ function tamCiz(v, onceki) {
   if (v.faz === "lobi") return lobiCiz(v);
   if (v.faz === "takimlar") return takimCiz(v);
   const a = v.adim;
+  if (a.tip === "kural") return kuralCiz(v);
   if (a.tip === "giris") return girisCiz(v);
   if (a.tip === "sahne") return sahneCiz(v);
   if (a.tip === "soru") return soruCiz(v);
@@ -214,14 +239,14 @@ function takimCiz(v, animasyon = true) {
   sayfa(v, `
     <section class="takim-izgara ${animasyon ? "karisiyor" : ""}">
       ${v.takimlar.map(t => `
-        <article class="takim-kart">
+        <article class="takim-kart" style="--renk:${t.renk}">
           <header style="--renk:${t.renk}"><span class="ikon">${takimIkon(t, 40)}</span><h3>${esc(t.ad)}</h3></header>
           <ul>${t.uyeler.map((u, i) => `<li style="animation-delay:${i * .12}s">${esc(ad(u))}</li>`).join("")}</ul>
         </article>`).join("")}
     </section>`, `
     <button class="btn ikincil" data-eylem="lobiye_don">Lobiye dön</button>
     <button class="btn ikincil" data-eylem="karistir">Yeniden karıştır</button>
-    <label class="anahtar"><input type="checkbox" id="kisa-mod" ${v.kisa_mod ? "checked" : ""}> Kısa mod (≈7 dk)</label>
+    <label class="anahtar"><input type="checkbox" id="kisa-mod" ${v.kisa_mod ? "checked" : ""}> Kısa mod</label>
     <span class="bosluk"></span>
     <button class="btn ikincil" id="onay-ac">${eksik ? `İçeriği onayla (${eksik} bekliyor)` : "İçerik onaylandı ✓"}</button>
     <button class="btn buyuk" data-eylem="baslat" ${eksik ? "disabled title=\"Önce akıştaki tüm içeriği onayla\"" : ""}>Oyunu başlat</button>`);
@@ -308,10 +333,26 @@ function baglaIlerle() {
   if (b) b.onclick = () => eylem("ilerle");
 }
 
+const KURALLAR = [
+  ["Telefonundan cevapla", "Sorular bu ekranda, cevaplar telefonunda. Seçtiğin cevap kilitlenir."],
+  ["Hızlı ol", "Doğru cevap 100 puan. Ne kadar hızlıysan o kadar bonus."],
+  ["Önce sen, sonra takımın", "Vakalarda önce tek başına karar ver, sonra takımınla tartışıp ortak kararı gönderin."],
+  ["Adil puan", "Takım puanı kişi sayısına göre dengelenir. Küçük takım dezavantajlı olmaz."],
+];
+
+function kuralCiz(v) {
+  sayfa(v, `
+    <section class="kurallar">
+      <h1>Nasıl oynanır?</h1>
+      <div class="kural-izgara">${KURALLAR.map((k, i) => `<article class="kural-kart" style="animation-delay:${0.1 + i * 0.12}s"><span class="kural-no kutu-${i}">${i + 1}</span><h3>${esc(k[0])}</h3><p>${esc(k[1])}</p></article>`).join("")}</div>
+    </section>`, `<span class="not">Boşluk tuşu veya sağ ok ile ilerleyebilirsin.</span><span class="bosluk"></span>${ilerleDugmesi("Başlayalım")}`);
+  baglaIlerle();
+}
+
 function girisCiz(v) {
   const a = v.adim;
   sayfa(v, `
-    <section class="sahne-giris"><div>
+    <section class="sahne-giris asama-${esc(a.asama)}"><div>
       <h1>${esc(a.baslik)}</h1>
       <p>${esc(a.aciklama)}</p>
     </div></section>`, `<span class="not">Boşluk tuşu veya sağ ok ile ilerleyebilirsin.</span><span class="bosluk"></span>${ilerleDugmesi("Başla")}`);
